@@ -157,7 +157,11 @@ document.addEventListener('keydown', e => {
   if (buf.length && ((e.ctrlKey && e.code === 'BracketRight') || e.code === 'F8')) { e.preventDefault(); buf.push('\x1d'); typed += '‹GS›'; times.push(performance.now()); return; }
   if (e.metaKey || e.ctrlKey || (e.altKey && !e.code.startsWith('Numpad'))) return;
   if (['ShiftLeft', 'ShiftRight', 'AltLeft', 'AltRight', 'CapsLock'].includes(e.code)) return;
-  if (e.target.matches?.('input, select, textarea')) return;
+  // Only real text fields keep their keys. A focused <select> (the distance picker) would otherwise swallow a scan
+  // and jump to whatever option its digits spell, so scanner bursts are taken from it too.
+  if (e.target.matches?.('input:not([type=range]):not([type=checkbox]):not([type=radio]), textarea')) return;
+  const onSelect = e.target.matches?.('select');
+  if (onSelect && !buf.length && /^(Arrow|Page|Home|End|Tab|Escape|Enter|Space)/.test(e.code)) return;
   if (!buf.length && (e.code === 'Tab' || ((e.code === 'Enter' || e.code === 'Space') && e.target.closest?.('button, a')))) return;
   if (!buf.length && stepOpen()) {
     if (e.code === 'Escape') { e.preventDefault(); return stepClose(); }
@@ -168,6 +172,7 @@ document.addEventListener('keydown', e => {
   e.preventDefault();
   if (e.code === 'Enter' || e.code === 'NumpadEnter') return flush('Enter');
   if (e.code === 'Tab') return flush('Tab');
+  if (onSelect) e.target.blur();
   buf.push(usChar(e)); typed += e.key.length === 1 ? e.key : `‹${e.key}›`; times.push(performance.now());
   clearTimeout(idle); idle = setTimeout(() => flush('yok'), 400);
 });
