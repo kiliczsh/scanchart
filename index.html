@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>scanchart · Barkod okuyucular için göz testi</title>
+<meta name="description" content="Barkod okuyucunuzun hangi türleri, ne kadar küçük ve ne kadar uzaktan okuduğunu ölçen, yazdırılabilir test tabloları. Ekrandan ya da kâğıttan okutun, sonuçlar canlı işaretlensin.">
+<meta property="og:title" content="scanchart · Barkod okuyucular için göz testi">
+<meta property="og:description" content="28 barkod türü, QR ve Data Matrix keskinlik tabloları, yazdırılabilir A4 test formu.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdn.jsdelivr.net/npm/bwip-js@4.5.1/dist/bwip-js-min.js"></script>
+<script src="assets/codes.js"></script>
+</head>
+<body>
+<noscript><p class="noscript">Tablolar JavaScript ile çiziliyor; JavaScript açık bir tarayıcıda açın.</p></noscript>
+
+<header class="mast screen">
+  <div class="mast-in">
+    <a class="logo" href="./" aria-label="scanchart ana sayfa">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#fff"/><path d="M6 6h12v4H10v8H6zM22 6h12v12h-4v-8h-8zM6 22h4v8h8v4H6zM26 26h8v8h-8z" fill="#111"/></svg>
+      <span>scanchart</span>
+    </a>
+    <p class="tag">Barkod okuyucular için göz testi</p>
+    <nav aria-label="Tablolar">
+      <a href="#turler">Türler</a><a href="#qr">QR keskinlik</a><a href="#dm">Data Matrix keskinlik</a><a href="#form">Test formu</a>
+    </nav>
+    <div class="mast-act">
+      <button class="btn" id="stepOpen">Tek tek test</button>
+      <button class="btn primary" id="print">Yazdır / PDF</button>
+    </div>
+  </div>
+</header>
+
+<section class="intro screen">
+  <div>
+    <h1>Okuyucun neyi, ne kadar küçük ve ne kadar uzaktan okuyor?</h1>
+    <p>Göz doktorundaki tablo gibi: türler bir sayfada, kodlar satır satır küçülerek diğerlerinde. Bu sayfa açıkken bir kodu okut, ister ekrandan ister kâğıttan; okunan kod kırmızıyla daire içine alınır.</p>
+    <p class="small">Ekranda boyutlar yaklaşıktır. Milimetrenin gerçekten milimetre olması için tabloları yazdır, ölçeği %100 bırak.</p>
+    <p class="intro-act"><button class="btn primary" id="stepOpen2">Ekrandan tek tek test et</button> <span>Kodlar sırayla, tek başına ve büyük gösterilir.</span></p>
+  </div>
+</section>
+
+<aside class="live screen" id="live" aria-label="Canlı test">
+  <span class="listen" id="listen" role="status">Dinliyor</span>
+  <label class="dist">Uzaklık
+    <select id="dist" aria-label="Okuyucunun tabloya uzaklığı">
+      <option value="">belirtilmedi</option><option>10</option><option>20</option><option>30</option><option>50</option><option>75</option><option>100</option>
+    </select> cm
+  </label>
+  <span class="sum" id="sum"></span>
+  <span class="last" id="last" aria-live="polite"></span>
+  <span class="act">
+    <button class="btn" id="copy">Sonucu kopyala</button>
+    <button class="btn" id="csv">CSV</button>
+    <button class="btn" id="reset">Sıfırla</button>
+  </span>
+</aside>
+
+<main id="sheets">
+  <section class="sheet" id="turler" aria-labelledby="h-turler">
+    <header class="sh"><span class="sh-logo">scanchart</span><h2 id="h-turler">1 · Tür tablosu</h2><span class="sh-meta">28 barkod türü · A4</span></header>
+    <p class="sh-note">Her kodu okut. Okuduğu türleri işaretle; okumadıkları ya okuyucuda kapalıdır ya da hiç desteklenmez.</p>
+    <p class="cut-note"><svg class="scis" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg> Kesik çizgilerden keserek kodları tek tek kullanabilirsin.</p>
+    <div class="types" id="types"></div>
+  </section>
+
+  <section class="sheet" id="qr" aria-labelledby="h-qr">
+    <header class="sh"><span class="sh-logo">scanchart</span><h2 id="h-qr">2 · QR keskinlik</h2><span class="sh-meta">QR 21×21 · modül 1,6–0,25 mm</span></header>
+    <p class="sh-note">Okuyucuyu sabit bir uzaklıkta tut, yukarıdan aşağı in. Okuyabildiğin son satır, o uzaklıktaki keskinliğindir.</p>
+    <p class="cut-note"><svg class="scis" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg> Her kod kendi beyaz kenarıyla kesik çizgili bir kutuda; keserek tek tek kullanabilirsin.</p>
+    <div class="rows" id="qrRows"></div>
+  </section>
+
+  <section class="sheet" id="dm" aria-labelledby="h-dm">
+    <header class="sh"><span class="sh-logo">scanchart</span><h2 id="h-dm">3 · Data Matrix keskinlik</h2><span class="sh-meta">Data Matrix 10×10 · modül 3–0,25 mm</span></header>
+    <p class="sh-note">Aynı test, en küçük Data Matrix ile. Yakında QR'dan iyi, uzakta çoğu okuyucuda kötüdür.</p>
+    <p class="cut-note"><svg class="scis" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg> Her kod kendi beyaz kenarıyla kesik çizgili bir kutuda; keserek tek tek kullanabilirsin.</p>
+    <div class="rows" id="dmRows"></div>
+  </section>
+
+  <section class="sheet" id="form" aria-labelledby="h-form">
+    <header class="sh"><span class="sh-logo">scanchart</span><h2 id="h-form">4 · Test formu</h2><span class="sh-meta">Elle doldurmak için</span></header>
+    <div class="fields">
+      <div><span>Okuyucu marka / model</span><i></i></div>
+      <div><span>Bağlantı (USB, Bluetooth…)</span><i></i></div>
+      <div><span>Tarih</span><i></i></div>
+      <div><span>Test eden</span><i></i></div>
+    </div>
+    <h3>Türler <small>okuduklarını işaretle</small></h3>
+    <ol class="checks" id="checks"></ol>
+    <h3>Keskinlik <small>her uzaklıkta okunan son satır</small></h3>
+    <table class="acuity-form">
+      <thead><tr><th>Uzaklık</th><th>QR son satır</th><th>QR modül (mm)</th><th>DM son satır</th><th>DM modül (mm)</th></tr></thead>
+      <tbody><tr><td>10 cm</td><td></td><td></td><td></td><td></td></tr><tr><td>30 cm</td><td></td><td></td><td></td><td></td></tr><tr><td>50 cm</td><td></td><td></td><td></td><td></td></tr><tr><td>75 cm</td><td></td><td></td><td></td><td></td></tr></tbody>
+    </table>
+    <h3>Notlar <small>son ek (Enter/Tab), klavye düzeni, ışık yansıması…</small></h3>
+    <div class="lines"><i></i><i></i><i></i></div>
+  </section>
+
+  <section class="log screen" aria-labelledby="h-log">
+    <h2 id="h-log">Okutma kaydı</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>#</th><th>Saat</th><th>Uzaklık</th><th>Eşleşen</th><th>Okuyucunun gönderdiği</th><th>Ekrana yazılan</th><th>ms/tuş</th></tr></thead>
+        <tbody id="log"></tbody>
+      </table>
+      <p class="empty" id="logEmpty">Henüz okutma yok. Tablolardan birini okut.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot screen">
+  <p>scanchart açık kaynak, tarayıcıda çalışır, hiçbir okuma bir sunucuya gönderilmez.</p>
+</footer>
+
+<section class="step screen" id="step" hidden role="dialog" aria-modal="true" aria-labelledby="stepTitle">
+  <header class="step-bar">
+    <div class="step-set" role="group" aria-label="Hangi kodlar">
+      <button data-set="all" aria-pressed="true">Hepsi</button><button data-set="type" aria-pressed="false">Türler</button><button data-set="qr" aria-pressed="false">QR keskinlik</button><button data-set="dm" aria-pressed="false">DM keskinlik</button>
+    </div>
+    <span class="listen" id="listen2" role="status">Dinliyor</span>
+    <button class="btn" id="stepClose">Kapat <kbd>Esc</kbd></button>
+  </header>
+  <div class="step-main">
+    <div class="step-info" aria-live="polite">
+      <p class="step-pos" id="stepPos"></p>
+      <h2 id="stepTitle"></h2>
+      <p class="step-sub" id="stepSub"></p>
+      <p class="step-state" id="stepState"></p>
+    </div>
+    <div class="step-stage"><span class="target" id="stepTarget"></span><span class="step-stamp" id="stepStamp" hidden></span></div>
+  </div>
+  <footer class="step-foot">
+    <div class="step-dots" id="stepDots" aria-hidden="true"></div>
+    <div class="step-act">
+      <button class="btn" id="stepPrev">← Önceki</button>
+      <button class="btn no" id="stepNo">Okumadı</button>
+      <button class="btn yes" id="stepYes">Okudu</button>
+      <button class="btn primary" id="stepNext">Sonraki →</button>
+    </div>
+    <p class="step-hint">Okuyucu kodu okursa kendiliğinden işaretlenir ve sıradakine geçer. Okumuyorsa "Okumadı"ya bas. Ok tuşlarıyla da gezinebilirsin.</p>
+  </footer>
+</section>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
