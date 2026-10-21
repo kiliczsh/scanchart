@@ -126,11 +126,70 @@ main > * + * { margin-top: 26px; }
 
 .foot { max-width: 1180px; margin: 0 auto; padding: 10px 20px 40px; color: var(--ink-2); font-size: 14px; }
 
-@media (max-width: 720px) {
-  .mast-act { margin-left: 0; }
-  .intro { padding-top: 26px; }
-  .live { gap: 6px 12px; padding: 8px 12px; }
-  main { padding-inline: 12px; }
+/* Phones: the A4 sheets reflow instead of shrinking, so type stays readable and codes keep their millimetre size.
+   Print rules below are untouched: a phone still prints true A4. */
+@media screen and (max-width: 760px) {
+  .mast-in { padding: 10px 14px; gap: 8px 12px; }
+  .logo { font-size: 22px; } .logo svg { width: 26px; height: 26px; }
+  .tag, #stepOpen { display: none; }
+  .mast-act { margin-left: auto; }
+  .mast-act .btn { min-height: 38px; padding: 0 14px; }
+  .mast nav { order: 3; width: 100%; flex-wrap: nowrap; overflow-x: auto; gap: 6px; margin: 0 -14px; padding: 0 14px 2px; scrollbar-width: none; }
+  .mast nav::-webkit-scrollbar { display: none; }
+  .mast nav a { flex: 0 0 auto; border: 1.5px solid var(--rule); border-radius: 999px; padding: 7px 12px; font-size: 14px; }
+
+  .intro { padding: 22px 16px 10px; }
+  .intro h1 { font-size: 32px; }
+  .intro p { font-size: 16px; }
+  .intro-act .btn { width: 100%; justify-content: center; min-height: 46px; }
+
+  /* The bar scrolls away; listening state and the last scan stay pinned to the bottom edge */
+  body { padding-bottom: 68px; }
+  .live { position: static; margin: 6px 0 0; padding: 10px 16px; gap: 8px 12px; background: var(--desk); backdrop-filter: none; }
+  .live .dist { order: 1; } .live .sum { order: 2; width: 100%; } .live .act { order: 3; width: 100%; }
+  .live .act .btn { flex: 1 1 auto; justify-content: center; min-height: 40px; }
+  .live .listen { position: fixed; z-index: 30; left: 12px; bottom: 12px; padding: 10px 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+  .live .last { position: fixed; z-index: 30; left: 128px; right: 12px; bottom: 12px; flex: none; padding: 10px 14px; border-radius: 999px; background: var(--paper); box-shadow: 0 4px 14px rgba(0,0,0,.18); font-size: 14px; }
+  .live .last:empty { display: none; }
+  body.stepping .live .listen, body.stepping .live .last { display: none; }
+
+  main { padding: 14px 10px 30px; }
+  .sheet { width: auto; min-height: 0; padding: 18px 14px 20px; zoom: 1; }
+  .sh { grid-template-columns: 1fr; gap: 4px; }
+  .sh-logo { display: none; }
+  .sh h2 { font-size: 22px; }
+  .sh-meta, .sh-note { font-size: 14px; }
+  .sh-note { margin: 10px 0 14px; }
+  .cut-note, .sf { display: none; }
+
+  .types { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .type { height: auto; min-height: 150px; padding: 12px 10px 10px; gap: 10px; }
+  .type .target svg { max-width: 100%; height: auto !important; }
+  .type figcaption { font-size: 13px; }
+  .type figcaption code { font-size: 11.5px; }
+  .type.seen::after { font-size: 11px; }
+
+  .row { grid-template-columns: minmax(0, 1fr); padding: 10px 0 0; }
+  .row + .row { border-top: 1px solid var(--rule); margin-top: 10px; }
+  .rl { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .rl b { font-size: 22px; min-width: 0; }
+  .rl span { font-size: 15px; } .rl small { font-size: 13px; }
+  .rl.seen::after { font-size: 11px; margin: 0; }
+  .rc { flex-wrap: wrap; }
+
+  .fields { grid-template-columns: 1fr; gap: 14px; }
+  .fields div { font-size: 14px; }
+  .sheet h3 { font-size: 18px; margin-top: 22px; }
+  .sheet h3 small { display: block; margin: 2px 0 0; font-size: 13px; }
+  .checks { columns: 2; font-size: 14px; }
+  .acuity-form { font-size: 12.5px; }
+  .acuity-form th, .acuity-form td { padding: 8px 6px; }
+
+  .log h2 { font-size: 24px; }
+  .foot { padding: 10px 16px 20px; }
+
+  .step-set { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .step-bar { padding: 10px 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .seen.flash::after, .step-stamp { animation: none; } }
 

@@ -341,9 +341,10 @@ $('step').tabIndex = -1;
 
 // ---------- Screen fit ----------
 // Sheets are A4 in real millimetres; on narrow screens they are zoomed down as a whole so the layout never reflows.
+// Below 760px the sheets reflow instead (see the phone rules in style.css).
 function fit() {
-  const sheetPx = 210 * 96 / 25.4, avail = document.documentElement.clientWidth - 24;
-  document.documentElement.style.setProperty('--fit', Math.min(1, avail / sheetPx).toFixed(3));
+  const sheetPx = 210 * 96 / 25.4, w = document.documentElement.clientWidth, avail = w - 24;
+  document.documentElement.style.setProperty('--fit', w <= 760 ? 1 : Math.min(1, avail / sheetPx).toFixed(3));
 }
 addEventListener('resize', fit);
 

@@ -15,7 +15,7 @@ Her sayfanın altında 10 cm'lik bir cetvel var. Kâğıtta tam 10 cm ölçmüyo
 
 ## Kullanım
 
-- **Ekrandan ya da kâğıttan okut:** Sayfa açıkken okuyucu klavye gibi yazar. Okunan kod kırmızı daireyle işaretlenir.
+- **Ekrandan ya da kâğıttan okut:** Sayfa açıkken okuyucu klavye gibi yazar. Okunan kodun yanına küçük bir "okundu" notu düşülür.
 - **Uzaklık:** Üst çubuktan uzaklığı seç. Her okuma o uzaklıkla kaydedilir.
 - **Sonuç:** "Sonucu kopyala" bir metin özeti verir. "CSV" bütün okumaları indirir.
 - **Yazdır / PDF:** A4, kenar boşluğu yok, ölçek %100. Tarayıcının yazdırma ekranında "PDF olarak kaydet" seçilir.
